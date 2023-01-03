@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Talisman's Order Line Hover
 // @namespace    https://www.talismanstore.com.br/
-// @version      0.1
+// @version      0.2
 // @description  Aplica o hover do nome da carta para a linha inteira do item
 // @author       Pedro Cardoso da Silva (@forsureitsme)
 // @match        https://www.talismanstore.com.br/?view=ecom/admin/compra&cod=*
@@ -13,7 +13,7 @@
 (function() {
     'use strict';
 
-    document.querySelectorAll('.panel-order--content [data-tooltip]').forEach(node => {
+    document.querySelectorAll('.panel-order--content .link-produto[data-tooltip]').forEach(node => {
         node.closest('article').dataset.tooltip = node.dataset.tooltip
         delete node.dataset.tooltip
 
