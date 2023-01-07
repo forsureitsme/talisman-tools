@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Talisman's Order Line Hover
 // @namespace    https://www.talismanstore.com.br/
-// @version      0.4
+// @version      0.5
 // @description  Aplica o hover do nome da carta para a linha inteira do item
 // @author       Pedro Cardoso da Silva (@forsureitsme)
 // @match        https://www.talismanstore.com.br/?view=ecom/admin/compra&cod=*
@@ -86,7 +86,7 @@
             // Pinta os elementos relevantes
             [itemNode, tooltipNode].forEach(node => {
                 Object.assign(node.style, {
-                    backgroundColor: 'rgba(255,0,0,.25)'
+                    backgroundColor: 'rgba(255,0,0,.5)'
                 });
             });
         }
