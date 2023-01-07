@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Talisman's Order Line Hover
 // @namespace    https://www.talismanstore.com.br/
-// @version      0.3
+// @version      0.4
 // @description  Aplica o hover do nome da carta para a linha inteira do item
 // @author       Pedro Cardoso da Silva (@forsureitsme)
 // @match        https://www.talismanstore.com.br/?view=ecom/admin/compra&cod=*
@@ -76,8 +76,23 @@
 
         // Coloca o elemento de linha horizontal dentro da tooltip
         tooltipNode.insertBefore(tooltipRowNode, null);
+
+        // Busca o texto do elemento que contém o preço da carta
+        let price = productLinkNode.closest('.row').children[1].innerText;
+        // Pega as 3 letras do código do set
+        price = parseInt(price.match(/R\$ (\d+)/)[1], 10);
+
+        if (price >= 10) {
+            // Pinta os elementos relevantes
+            [itemNode, tooltipNode].forEach(node => {
+                Object.assign(node.style, {
+                    backgroundColor: 'rgba(255,0,0,.25)'
+                });
+            });
+        }
     });
 
+    // Reinicializa tooltips
     if (window.stickytooltip) {
         window.stickytooltip.init("*[data-tooltip]", "mystickytooltip");
     };
