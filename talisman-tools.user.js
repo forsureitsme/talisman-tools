@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Talisman's Order Line Hover
 // @namespace    https://www.talismanstore.com.br/
-// @version      0.2
+// @version      0.3
 // @description  Aplica o hover do nome da carta para a linha inteira do item
 // @author       Pedro Cardoso da Silva (@forsureitsme)
 // @match        https://www.talismanstore.com.br/?view=ecom/admin/compra&cod=*
@@ -13,18 +13,72 @@
 (function() {
     'use strict';
 
-    document.querySelectorAll('.panel-order--content .link-produto[data-tooltip]').forEach(node => {
-        node.closest('article').dataset.tooltip = node.dataset.tooltip
-        delete node.dataset.tooltip
-
-        window.$(node)
+    // Pra cada link de produto (que tem o atributo que habilita o hover)
+    document.querySelectorAll('.panel-order--content .link-produto[data-tooltip]').forEach(productLinkNode => {
+        // Coloca em uma variável o elemento <article> mais próximo subindo o DOM a partir do link do produto
+        const itemNode = productLinkNode.closest('article');
+        // Copia o atributo que habilita o tooltip para o artigo
+        itemNode.dataset.tooltip = productLinkNode.dataset.tooltip;
+        // Remove o atributo do link do produto
+        delete productLinkNode.dataset.tooltip;
+        // Remove a tooltip já configurada no link do produto
+        window.$(productLinkNode)
             .unbind('mouseenter')
             .unbind('mousemove')
             .unbind('mouseleave')
         ;
+
+        // Busca o elemento que possui a qualidade do produto
+        const rowInfosNode = itemNode.querySelector('.icon_qualid')
+            // e busca a linha mais próxima(a que contém as informações da carta)
+            .closest('.row')
+            // cria um clone em uma variável
+            .cloneNode(true)
+        ;
+        // Remove as classes desse elemento
+        rowInfosNode.classList.remove(...rowInfosNode.classList);
+        // Define o novo estilo de linha vertical
+        Object.assign(rowInfosNode.style, {
+            display: 'flex',
+            flexDirection: 'column',
+            fontSize: '10em'
+        });
+
+        // Busca o texto do elemento que contém o código do set
+        let setCode = productLinkNode.querySelector('.input-infoaux').innerText;
+        // Pega as 3 letras do código do set
+        setCode = setCode.match(/\(Código: (.{3})/i)[1];
+
+        // Pega a primeira linha de informações
+        const setInfo = rowInfosNode.children[0];
+        // Substitui ela pelo código do set
+        setInfo.innerHTML = setCode;
+
+        // Pega a segunda linha de informações
+        const langInfo = rowInfosNode.children[1];
+        // Tira tudo dela que não é texto
+        langInfo.innerHTML = langInfo.innerText.trim();
+
+        // Cria um elemento de linha horizontal para poder deixar as informações do lado da carta
+        const tooltipRowNode = document.createElement('div');
+        tooltipRowNode.style.display = 'flex';
+
+        // Pega elemento da tooltip em uma variável
+        const tooltipNode = document.querySelector(`#${itemNode.dataset.tooltip}`);
+        // Pega a imagem da carta
+        const tooltipImageNode = tooltipNode.firstElementChild;
+
+        // Coloca as informações dentro do elemento de linha horizontal
+        tooltipRowNode.insertBefore(rowInfosNode, null);
+        // Tira a imagem da carta de dentro do tooltip
+        // e coloca ela dentro do elemento de linha horizonta
+        tooltipRowNode.insertBefore(tooltipImageNode, null);
+
+        // Coloca o elemento de linha horizontal dentro da tooltip
+        tooltipNode.insertBefore(tooltipRowNode, null);
     });
 
     if (window.stickytooltip) {
-        window.stickytooltip.init("*[data-tooltip]", "mystickytooltip")
+        window.stickytooltip.init("*[data-tooltip]", "mystickytooltip");
     };
 })();
