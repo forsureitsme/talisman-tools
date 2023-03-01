@@ -1,11 +1,14 @@
 // ==UserScript==
-// @name         Talisman's Order Line Hover
+// @name         Talisman Tools
 // @namespace    https://www.talismanstore.com.br/
 // @version      0.6
 // @description  Tools to bring a better quality of life for Talisman Store workers
 // @author       Pedro Cardoso da Silva (@forsureitsme)
 // @match        https://www.talismanstore.com.br/?view=ecom/admin/compra&cod=*
+// @match        https://talismanstore.com.br/?view=ecom/admin/compra&cod=*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=talismanstore.com.br
+// @homepageURL  https://github.com/forsureitsme/talisman-tools
+// @downloadURL  https://gist.github.com/forsureitsme/dc75a79375cd1e6ee7d348b80f1178f7/raw/talisman-tools.user.js
 // @grant        none
 // ==/UserScript==
 
