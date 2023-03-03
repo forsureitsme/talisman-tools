@@ -4,8 +4,8 @@
 // @version      0.6
 // @description  Tools to bring a better quality of life for Talisman Store workers
 // @author       Pedro Cardoso da Silva (@forsureitsme)
-// @match        https://www.talismanstore.com.br/?view=ecom/admin/compra&cod=*
-// @match        https://talismanstore.com.br/?view=ecom/admin/compra&cod=*
+// @match        https://talismanstore.com.br/
+// @match        https://*.talismanstore.com.br/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=talismanstore.com.br
 // @homepageURL  https://github.com/forsureitsme/talisman-tools
 // @downloadURL  https://gist.github.com/forsureitsme/dc75a79375cd1e6ee7d348b80f1178f7/raw/talisman-tools.user.js
@@ -14,6 +14,14 @@
 
 (function () {
   "use strict";
+  const isOrderPage = () => {
+    const params = (new URL(window.location)).searchParams;
+
+    return (
+      params.get('view') === 'ecom/admin/compra'
+      && params.get('cod')
+    );
+  }
 
   class Product {
     constructor(productLinkNode) {
@@ -149,17 +157,20 @@
     }
   }
 
-  document
-  .querySelectorAll(".panel-order--content .link-produto[data-tooltip]")
-  .forEach((productLinkNode) => {
-    const product = new Product(productLinkNode);
 
-    product.moveTooltipFromLinkToRow();
-    product.renderTooltip();
-    product.highlightBinderCards();
-  });
+  if (!isOrderPage()) {
+    document
+    .querySelectorAll(".panel-order--content .link-produto[data-tooltip]")
+    .forEach((productLinkNode) => {
+      const product = new Product(productLinkNode);
 
-  if (window.stickytooltip) {
-    window.stickytooltip.init("*[data-tooltip]", "mystickytooltip");
-  }
+      product.moveTooltipFromLinkToRow();
+      product.renderTooltip();
+      product.highlightBinderCards();
+    });
+
+    if (window.stickytooltip) {
+      window.stickytooltip.init("*[data-tooltip]", "mystickytooltip");
+    }
+  };
 })();
