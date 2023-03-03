@@ -158,7 +158,7 @@
   }
 
 
-  if (!isOrderPage()) {
+  if (isOrderPage()) {
     document
     .querySelectorAll(".panel-order--content .link-produto[data-tooltip]")
     .forEach((productLinkNode) => {
