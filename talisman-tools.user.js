@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Talisman Tools
 // @namespace    https://www.talismanstore.com.br/
-// @version      0.6
+// @version      0.6.1
 // @description  Tools to bring a better quality of life for Talisman Store workers
 // @author       Pedro Cardoso da Silva (@forsureitsme)
 // @match        https://talismanstore.com.br/
